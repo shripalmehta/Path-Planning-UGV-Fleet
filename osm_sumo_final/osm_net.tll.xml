@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2024-04-04 10:37:53 by Eclipse SUMO netconvert Version 1.19.0
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <osm-files value="/Users/shripal/Documents/Study/PathFinding/osm_sumo_final/LS90BT.osm"/>
+    </input>
+
+    <output>
+        <output-file value="./sumo_network.net.xml"/>
+        <plain-output-prefix value="./osm_net"/>
+    </output>
+
+    <projection>
+        <proj.utm value="true"/>
+    </projection>
+
+    <formats>
+        <osm.all-attributes value="false"/>
+    </formats>
+
+</configuration>
+-->
+
+<tlLogics version="1.16" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/tllogic_file.xsd">
+    <tlLogic id="6177973904" type="static" programID="0" offset="0">
+        <phase duration="82" state="GG"/>
+        <phase duration="3"  state="yy"/>
+        <phase duration="5"  state="rr"/>
+    </tlLogic>
+    <tlLogic id="9416622073" type="static" programID="0" offset="0">
+        <phase duration="82" state="GG"/>
+        <phase duration="3"  state="yy"/>
+        <phase duration="5"  state="rr"/>
+    </tlLogic>
+    <tlLogic id="9416622074" type="static" programID="0" offset="0">
+        <phase duration="82" state="GG"/>
+        <phase duration="3"  state="yy"/>
+        <phase duration="5"  state="rr"/>
+    </tlLogic>
+
+    <connection from="-352963640#3" to="-352963640#2" fromLane="0" toLane="0" tl="9416622073" linkIndex="0"/>
+    <connection from="-352963640#4" to="-352963640#3" fromLane="0" toLane="0" tl="6177973904" linkIndex="0"/>
+    <connection from="-352963640#5" to="-352963640#4" fromLane="0" toLane="0" tl="9416622074" linkIndex="0"/>
+    <connection from="352963640#2" to="352963640#3" fromLane="0" toLane="0" tl="9416622073" linkIndex="1"/>
+    <connection from="352963640#3" to="352963640#4" fromLane="0" toLane="0" tl="6177973904" linkIndex="1"/>
+    <connection from="352963640#4" to="352963640#5" fromLane="0" toLane="0" tl="9416622074" linkIndex="1"/>
+</tlLogics>
