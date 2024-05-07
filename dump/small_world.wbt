@@ -1,0 +1,387 @@
+#VRML_SIM R2023b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/Floor.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/road/protos/Road.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/road/protos/Crossroad.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/road/protos/RoadLine.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/buildings/protos/SimpleBuilding.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/trees/protos/SimpleTree.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/street_furniture/protos/Fence.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/geometries/protos/Extrusion.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/trees/protos/Forest.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/traffic/protos/ParkingLines.proto"
+
+WorldInfo {
+  info [
+    "World generated using the Open Street Map to Webots importer"
+    "Author: David Mansolino <david.mansolino@epfl.ch>"
+  ]
+  gpsCoordinateSystem "WGS84"
+  gpsReference 53.788895 -1.5171350000000001 0
+  lineScale 0
+}
+Viewpoint {
+  orientation -0.3922 0.3922 0.8321 1.7536
+  position 0 -60.35 71
+  near 3
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+Floor {
+  translation 0 0 -0.02
+  size 51 49
+  appearance PBRAppearance {
+    baseColorMap ImageTexture {
+      url [
+        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/default/worlds/textures/grass.jpg"
+      ]
+    }
+    roughness 1
+    metalness 0
+  }
+}
+Crossroad {
+  translation -10.450912 9.408612 0.010000
+  name "crossroad(1)"
+  id "1676360522"
+  shape [
+    4.259265 -1.363328 0.000000
+    1.464896 -4.225409 0.000000
+    -1.618581 -4.168956 0.000000
+    -4.306313 -1.206509 0.000000
+    -4.259475 1.362671 0.000000
+    -1.465549 4.225182 0.000000
+    1.397184 1.431040 0.000000
+    4.259265 -1.363328 0.000000
+  ]
+  connectedRoadIDs [
+    "23091396"
+    "619506572_3"
+    "619506572_4"
+  ]
+}
+Crossroad {
+  translation -14.666620 13.727807 0.010000
+  name "crossroad(2)"
+  id "249205862"
+  shape [
+    4.259475 -1.362671 0.000000
+    1.465549 -4.225182 0.000000
+    -1.397364 -1.430864 0.000000
+    -4.259093 1.363864 0.000000
+    -1.464365 4.225593 0.000000
+    1.046217 4.348038 0.000000
+    4.106160 1.771849 0.000000
+    4.259475 -1.362671 0.000000
+  ]
+  connectedRoadIDs [
+    "23089316"
+    "619506572_2"
+    "619506572_4"
+  ]
+}
+Crossroad {
+  translation 5.597027 -7.028193 0.010000
+  name "crossroad(3)"
+  id "249205864"
+  shape [
+    4.259146 -1.363698 0.000000
+    1.464530 -4.225536 0.000000
+    -1.313649 -4.274848 0.000000
+    -4.208068 -1.513989 0.000000
+    -4.259265 1.363328 0.000000
+    -1.464896 4.225409 0.000000
+    1.028366 4.352294 0.000000
+    4.098855 1.788683 0.000000
+    4.259146 -1.363698 0.000000
+  ]
+  connectedRoadIDs [
+    "23089317"
+    "23091395"
+    "619506572_1"
+    "619506572_3"
+  ]
+}
+Road {
+  translation -17.726563 11.151619 0.010000
+  name "St Hilda's Place"
+  id "23089316"
+  startJunction "249205862"
+  splineSubdivision 0
+  numberOfLanes 1
+  numberOfForwardLanes 1
+  speedLimit 8.940800
+  width 4.000000
+  startingAngle -3.841370
+  lines [
+  ]
+  startLine [
+    "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/road/protos/textures/road_line_dashed.png"
+    "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/road/protos/textures/road_line_triangle.png"
+  ]
+  wayPoints [
+    0.000000 0.000000 0.000000
+    -74.910434 -63.067634 0.000000
+  ]
+}
+Road {
+  translation 2.526538 -9.591803 0.010000
+  name "St Hilda's Road"
+  id "23089317"
+  startJunction "249205864"
+  splineSubdivision 0
+  numberOfLanes 1
+  numberOfForwardLanes 1
+  speedLimit 8.940800
+  width 4.000000
+  startingAngle -3.837266
+  lines [
+  ]
+  startLine [
+    "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/road/protos/textures/road_line_dashed.png"
+    "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/road/protos/textures/road_line_triangle.png"
+  ]
+  wayPoints [
+    0.000000 0.000000 0.000000
+    -68.692759 -57.352918 0.000000
+    -72.418526 -58.510230 0.000000
+  ]
+}
+Road {
+  translation 179.391938 161.676471 0.010000
+  name "Copperfield Grove"
+  id "23091395"
+  endJunction "249205864"
+  splineSubdivision 0
+  numberOfLanes 1
+  numberOfForwardLanes 1
+  speedLimit 8.940800
+  width 4.000000
+  endingAngle -3.903378
+  lines [
+  ]
+  endLine [
+    "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/road/protos/textures/road_line_triangle.png"
+    "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/road/protos/textures/road_line_dashed.png"
+  ]
+  wayPoints [
+    0.000000 0.000000 0.000000
+    -57.585760 -56.005833 0.000000
+    -105.610292 -103.508537 0.000000
+    -169.297673 -164.414946 0.000000
+    -170.900492 -165.943805 0.000000
+  ]
+}
+Road {
+  translation 154.609832 169.716454 0.010000
+  name "Copperfield View"
+  id "23091396"
+  endJunction "1676360522"
+  splineSubdivision 0
+  numberOfLanes 1
+  numberOfForwardLanes 1
+  speedLimit 8.940800
+  width 4.000000
+  endingAngle -3.975573
+  lines [
+  ]
+  endLine [
+    "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/road/protos/textures/road_line_triangle.png"
+    "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/road/protos/textures/road_line_dashed.png"
+  ]
+  wayPoints [
+    0.000000 0.000000 0.000000
+    -49.866084 -47.630619 0.000000
+    -66.223408 -62.730195 0.000000
+    -83.189812 -78.332133 0.000000
+    -98.095433 -93.846421 0.000000
+    -117.281998 -112.332621 0.000000
+    -133.572501 -127.497325 0.000000
+    -151.062348 -144.879509 0.000000
+    -161.479006 -156.360013 0.000000
+    -162.373012 -157.345395 0.000000
+  ]
+}
+Road {
+  translation -17.461349 16.589536 0.010000
+  name "Glencoe View"
+  id "619506572_2"
+  startJunction "249205862"
+  splineSubdivision 0
+  numberOfLanes 1
+  numberOfForwardLanes 1
+  speedLimit 8.940800
+  width 4.000000
+  startingAngle -2.344350
+  lines [
+  ]
+  startLine [
+    "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/road/protos/textures/road_line_dashed.png"
+    "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/road/protos/textures/road_line_triangle.png"
+  ]
+  wayPoints [
+    0.000000 0.000000 0.000000
+    -18.519132 18.963106 0.000000
+    -32.324197 33.098567 0.000000
+    -37.543175 38.443014 0.000000
+    -59.927494 61.369748 0.000000
+    -67.294651 68.917528 0.000000
+    -74.466344 76.257939 0.000000
+    -85.429510 87.492438 0.000000
+  ]
+}
+Road {
+  translation 27.409665 -29.365509 0.010000
+  name "Glencoe View(1)"
+  id "619506572_1"
+  endJunction "249205864"
+  splineSubdivision 0
+  numberOfLanes 1
+  numberOfForwardLanes 1
+  speedLimit 8.940800
+  width 4.000000
+  endingAngle -2.344311
+  lines [
+  ]
+  endLine [
+    "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/road/protos/textures/road_line_triangle.png"
+    "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/road/protos/textures/road_line_dashed.png"
+  ]
+  wayPoints [
+    0.000000 0.000000 0.000000
+    -19.018021 19.475478 0.000000
+  ]
+}
+Road {
+  translation 2.802658 -4.166112 0.010000
+  name "Glencoe View(2)"
+  id "619506572_3"
+  startJunction "249205864"
+  endJunction "1676360522"
+  splineSubdivision 0
+  numberOfLanes 1
+  numberOfForwardLanes 1
+  speedLimit 8.940800
+  width 4.000000
+  startingAngle -2.344224
+  endingAngle -2.344224
+  lines [
+  ]
+  startLine [
+    "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/road/protos/textures/road_line_dashed.png"
+    "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/road/protos/textures/road_line_triangle.png"
+  ]
+  endLine [
+    "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/road/protos/textures/road_line_triangle.png"
+    "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/road/protos/textures/road_line_dashed.png"
+  ]
+  wayPoints [
+    0.000000 0.000000 0.000000
+    -10.459202 10.712644 0.000000
+  ]
+}
+SimpleBuilding {
+  translation -14.38 -12.45 0.00
+  name "building(1)"
+  corners [
+    0.00 0.00,
+    -4.47 -3.81,
+    -10.89 3.70,
+    -6.42 7.51,
+  ]
+  roofShape "pyramidal roof"
+  wallType "stone wall"
+  floorNumber 2
+  floorHeight 3
+}
+SimpleBuilding {
+  translation -9.91 -8.64 0.00
+  name "building(2)"
+  corners [
+    0.00 0.00,
+    -4.47 -3.81,
+    -10.90 3.70,
+    -6.42 7.51,
+  ]
+  roofShape "pyramidal roof"
+  wallType "glass highrise"
+  floorNumber 2
+  floorHeight 3
+}
+SimpleBuilding {
+  translation -12.22 2.37 0.00
+  name "building(3)"
+  corners [
+    0.00 0.00,
+    6.42 -7.51,
+    2.31 -11.01,
+    -4.11 -3.50,
+  ]
+  roofShape "pyramidal roof"
+  wallType "classic building"
+  floorNumber 2
+  floorHeight 3
+}
+SimpleBuilding {
+  translation 17.49 -10.80 0.00
+  name "building(4)"
+  corners [
+    0.00 0.00,
+    7.58 7.27,
+    4.28 10.70,
+    10.05 16.23,
+    13.34 12.80,
+    19.78 6.11,
+    6.44 -6.68,
+  ]
+  roofShape "flat roof"
+  wallType "old brick building"
+  floorNumber 3
+  floorHeight 3
+}
+SimpleBuilding {
+  translation 10.25 5.85 0.00
+  name "building(5)"
+  corners [
+    0.00 0.00,
+    -4.40 -4.25,
+    -10.92 2.44,
+    -6.53 6.71,
+  ]
+  roofShape "pyramidal roof"
+  wallType "highrise"
+  floorNumber 2
+  floorHeight 3
+}
+SimpleBuilding {
+  translation 14.65 10.11 0.00
+  name "building(6)"
+  corners [
+    0.00 0.00,
+    -4.40 -4.27,
+    -10.92 2.44,
+    -6.53 6.70,
+  ]
+  roofShape "pyramidal roof"
+  wallType "old building"
+  floorNumber 2
+  floorHeight 3
+}
+SimpleBuilding {
+  translation 19.05 14.37 0.00
+  name "building(7)"
+  corners [
+    0.00 0.00,
+    -4.40 -4.25,
+    -10.92 2.44,
+    -6.53 6.71,
+  ]
+  roofShape "pyramidal roof"
+  wallType "stone wall"
+  floorNumber 2
+  floorHeight 3
+}

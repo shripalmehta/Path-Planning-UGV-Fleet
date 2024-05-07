@@ -4,11 +4,9 @@ class FleetManager:
     def __init__(self, bot_count, start):
         self.id = id
         self.start = start
+        self.bot_capacity = 1000
         self.bot_count = 0
         self.bots = self.create_bots(bot_count)
-
-    skill_dig = 500
-    [skill_dig, skill_roll]
 
     def create_bots(self, n):
         bots = []
@@ -20,7 +18,8 @@ class FleetManager:
         # TODO add bot features - capacity, skills, etc.
         b = Vehicle(id=id, 
                     start=list(reversed(self.start)),
-                    capacity=[500]) # capacity = material in kg
+                    end=list(reversed(self.start)),
+                    capacity=[self.bot_capacity]) # payload capacity = material in kg
         self.bot_count += 1
         return b
 
@@ -29,8 +28,7 @@ class FleetManager:
             if bot.id == id:
                 self.bots.remove(bot)
                 self.bot_count -= 1
-                # logger.INFO('bot with id =', id, 'removed')
-
+                
     def get_bot_count(self):
         return self.bot_count
 
