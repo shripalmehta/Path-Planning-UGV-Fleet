@@ -1,6 +1,6 @@
-# project data files
-data/
+# ignore large data files
 dump/data_dump/
+dump/LS90BT_webots/data/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

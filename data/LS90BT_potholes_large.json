@@ -1,0 +1,140 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "defect": "pothole",
+        "dim": "1x0.5x0.2"
+      },
+      "geometry": {
+        "coordinates": [
+          -1.5202653014356144,
+          53.78860942921949
+        ],
+        "type": "Point"
+      },
+      "id": 0
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "defect": "pothole",
+        "dim": "0.5x1.2x0.2"
+      },
+      "geometry": {
+        "coordinates": [
+          -1.5185276122489597,
+          53.78845734482039
+        ],
+        "type": "Point"
+      },
+      "id": 1
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "defect": "pothole",
+        "dim": "0.5x1.2x0.2"
+      },
+      "geometry": {
+        "coordinates": [
+          -1.5181200061435902,
+          53.7886537870655
+        ],
+        "type": "Point"
+      },
+      "id": 2
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "defect": "pothole",
+        "dim": "1x2.5x0.2"
+      },
+      "geometry": {
+        "coordinates": [
+          -1.516536749999375,
+          53.78941719738333
+        ],
+        "type": "Point"
+      },
+      "id": 3
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "defect": "pothole",
+        "dim": "1x0.5x0.2"
+      },
+      "geometry": {
+        "coordinates": [
+          -1.515893722095484,
+          53.7902010524229
+        ],
+        "type": "Point"
+      },
+      "id": 4
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "defect": "pothole",
+        "dim": "2x0.5x0.2"
+      },
+      "geometry": {
+        "coordinates": [
+          -1.5157207769570675,
+          53.79012401470595
+        ],
+        "type": "Point"
+      },
+      "id": 5
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "defect": "pothole",
+        "dim": "1x0.5x0.2"
+      },
+      "geometry": {
+        "coordinates": [
+          -1.5150777490531766,
+          53.789720028964695
+        ],
+        "type": "Point"
+      },
+      "id": 6
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "defect": "pothole",
+        "dim": "1x0.5x0.2"
+      },
+      "geometry": {
+        "coordinates": [
+          -1.5165475271180355,
+          53.79008783703668
+        ],
+        "type": "Point"
+      },
+      "id": 7
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "defect": "dent",
+        "dim": "10x3.5x0.05"
+      },
+      "geometry": {
+        "coordinates": [
+          -1.5178539965092739,
+          53.78843569024261
+        ],
+        "type": "Point"
+      },
+      "id": 8
+    }
+  ]
+}
