@@ -21,6 +21,7 @@ def get_coordinates(postcode):
             return (coordinates[1], coordinates[0])  # Return as (lat, lon)
     return None  # Return None if coordinates not found
 
+
 def main():
     st.title("Road Fixer")
 
@@ -40,7 +41,7 @@ def main():
 
     # Input for postcode
     postcode = st.text_input("Enter postcode for station location:")
-    
+
     if postcode:
         # Get coordinates for the station
         station_coords = get_coordinates(postcode)
@@ -66,11 +67,14 @@ def main():
         gdf['area'] = gdf['length'] * gdf['width']
         gdf['volume'] = gdf['length'] * gdf['width'] * gdf['depth']
         gdf['material_required'] = gdf['volume'] * 2800  # kg
-        
+
         # Display full list of records
         st.write(gdf)
 
         if postcode and station_coords:
+            # Get coordinates for the station
+            station_coords = get_coordinates(postcode)
+
             # Create a map centered on the station
             m = folium.Map(location=station_coords, zoom_start=12)
 
