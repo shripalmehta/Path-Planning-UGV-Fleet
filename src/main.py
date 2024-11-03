@@ -1,4 +1,6 @@
 import streamlit as st
+import geopandas as gpd
+import os
 
 def main():
     st.title("Road Fixer")
@@ -16,6 +18,18 @@ def main():
     # Display the entered values
     st.write(f"Fleet size: {num_bots} bot{'s' if num_bots > 1 else ''}")
     st.write(f"Payload capacity per bot: {payload_capacity} kg")
+
+    # Read GeoJSON file
+    data_dir = "data"
+    geojson_file = "LS90BT.geojson"
+    file_path = os.path.join(data_dir, geojson_file)
+
+    if os.path.exists(file_path):
+        gdf = gpd.read_file(file_path)
+        st.write(f"Successfully loaded {len(gdf)} records from {geojson_file}")
+        st.write(gdf.head())
+    else:
+        st.error(f"File not found: {file_path}")
 
 if __name__ == "__main__":
     main()
