@@ -4,6 +4,8 @@ import os
 import requests
 import folium
 from streamlit_folium import folium_static
+from utils import calculate_pothole_metrics
+from job_planning import create_repair_jobs
 
 def get_coordinates(postcode):
     # api_key = st.secrets['ORS_key']
@@ -21,24 +23,6 @@ def get_coordinates(postcode):
             coordinates = data['features'][0]['geometry']['coordinates']
             return (coordinates[1], coordinates[0])  # Return as (lat, lon)
     return None  # Return None if coordinates not found
-
-
-def create_repair_jobs(gdf, bot_capacity):
-    jobs = []
-    for idx, row in gdf.iterrows():
-        material_required = row['material_required']
-        job_count = 1
-        while material_required > 0:
-            amount = min(material_required, bot_capacity)
-            jobs.append({
-                'id': f"{idx}_{job_count}",
-                'location': (row['geometry'].y, row['geometry'].x),
-                'amount': amount
-            })
-            material_required -= amount
-            job_count += 1
-    return jobs
-
 
 def main():
     st.title("Road Fixer")
@@ -59,7 +43,7 @@ def main():
 
     # Input for postcode
     postcode = st.text_input("Enter postcode for station location:")
-
+    
     if postcode:
         # Get coordinates for the station
         station_coords = get_coordinates(postcode)
@@ -78,25 +62,17 @@ def main():
         gdf = gpd.read_file(file_path)
         st.write(f"Successfully loaded {len(gdf)} records from {geojson_file}")
         
-        # Extract length, width, and depth from dim
-        gdf[['length', 'width', 'depth']] = gdf['dim'].str.split('x', expand=True).astype(float)
+        # Calculate pothole metrics
+        gdf = calculate_pothole_metrics(gdf)
         
-        # Calculate area, volume, and material required
-        gdf['area'] = gdf['length'] * gdf['width']
-        gdf['volume'] = gdf['length'] * gdf['width'] * gdf['depth']
-        gdf['material_required'] = gdf['volume'] * 2800  # kg
+        # Display full list of records
+        st.write(gdf)
 
         # Create repair jobs
         repair_jobs = create_repair_jobs(gdf, payload_capacity)
         st.write(f"Total number of repair jobs created: {len(repair_jobs)}")
 
-        # Display full list of records
-        st.write(gdf)
-
         if postcode and station_coords:
-            # Get coordinates for the station
-            station_coords = get_coordinates(postcode)
-
             # Create a map centered on the station
             m = folium.Map(location=station_coords, zoom_start=12)
 
