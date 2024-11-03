@@ -27,7 +27,16 @@ def main():
     if os.path.exists(file_path):
         gdf = gpd.read_file(file_path)
         st.write(f"Successfully loaded {len(gdf)} records from {geojson_file}")
-        st.write(gdf.head())
+        
+        # Extract length, width, and depth from dim
+        gdf[['length', 'width', 'depth']] = gdf['dim'].str.split('x', expand=True).astype(float)
+        
+        # Calculate area and volume
+        gdf['area'] = gdf['length'] * gdf['width']
+        gdf['volume'] = gdf['length'] * gdf['width'] * gdf['depth']
+        
+        # Display full list of records
+        st.write(gdf)
     else:
         st.error(f"File not found: {file_path}")
 
