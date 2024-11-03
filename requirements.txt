@@ -1,6 +1,9 @@
+folium
 geopandas
 numpy
 pandas
 plotly
 pydeck
+requests
 streamlit
+streamlit-folium

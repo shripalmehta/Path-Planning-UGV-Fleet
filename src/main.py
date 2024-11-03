@@ -1,6 +1,14 @@
 import streamlit as st
 import geopandas as gpd
 import os
+import requests
+import folium
+from streamlit_folium import folium_static
+
+def get_coordinates(postcode):
+    # TODO: Implement Pelias search to get coordinates
+    # For now, return a dummy coordinate
+    return (51.5074, -0.1278)  # London coordinates
 
 def main():
     st.title("Road Fixer")
@@ -18,6 +26,9 @@ def main():
     # Display the entered values
     st.write(f"Fleet size: {num_bots} bot{'s' if num_bots > 1 else ''}")
     st.write(f"Payload capacity per bot: {payload_capacity} kg")
+
+    # Input for postcode
+    postcode = st.text_input("Enter postcode for station location:")
 
     # Read GeoJSON file
     data_dir = "data"
@@ -37,6 +48,31 @@ def main():
         
         # Display full list of records
         st.write(gdf)
+
+        if postcode:
+            # Get coordinates for the station
+            station_coords = get_coordinates(postcode)
+
+            # Create a map centered on the station
+            m = folium.Map(location=station_coords, zoom_start=12)
+
+            # Add marker for the station
+            folium.Marker(
+                station_coords,
+                popup="Station",
+                icon=folium.Icon(color="red", icon="info-sign"),
+            ).add_to(m)
+
+            # Add markers for potholes
+            for idx, row in gdf.iterrows():
+                folium.Marker(
+                    [row['geometry'].y, row['geometry'].x],
+                    popup=f"Pothole {idx}",
+                    icon=folium.Icon(color="blue", icon="road"),
+                ).add_to(m)
+
+            # Display the map
+            folium_static(m)
     else:
         st.error(f"File not found: {file_path}")
 
