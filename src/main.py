@@ -23,6 +23,23 @@ def get_coordinates(postcode):
     return None  # Return None if coordinates not found
 
 
+def create_repair_jobs(gdf, bot_capacity):
+    jobs = []
+    for idx, row in gdf.iterrows():
+        material_required = row['material_required']
+        job_count = 1
+        while material_required > 0:
+            amount = min(material_required, bot_capacity)
+            jobs.append({
+                'id': f"{idx}_{job_count}",
+                'location': (row['geometry'].y, row['geometry'].x),
+                'amount': amount
+            })
+            material_required -= amount
+            job_count += 1
+    return jobs
+
+
 def main():
     st.title("Road Fixer")
 
@@ -68,6 +85,10 @@ def main():
         gdf['area'] = gdf['length'] * gdf['width']
         gdf['volume'] = gdf['length'] * gdf['width'] * gdf['depth']
         gdf['material_required'] = gdf['volume'] * 2800  # kg
+
+        # Create repair jobs
+        repair_jobs = create_repair_jobs(gdf, payload_capacity)
+        st.write(f"Total number of repair jobs created: {len(repair_jobs)}")
 
         # Display full list of records
         st.write(gdf)
