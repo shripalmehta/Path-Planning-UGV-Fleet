@@ -1,9 +1,11 @@
+import streamlit as st
 import folium
 import os
 import requests
 from streamlit_folium import folium_static
 
 def get_coordinates(postcode):
+    # api_key = st.secrets['ORS_key']
     api_key = os.environ['ORS_key']
     base_url = "https://api.openrouteservice.org/geocode/search"
     params = {
