@@ -2,4 +2,8 @@
 Data Driven Pothole Repair using Fleet of UGVs
 
 
-Run the jupyter notebook: `src/main.ipynb`
+Run the Streamlit app from `src/main.py`
+Use command:
+```
+streamlit run ./src/main.py
+```
