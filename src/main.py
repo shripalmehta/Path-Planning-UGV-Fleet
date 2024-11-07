@@ -54,32 +54,32 @@ def main():
         repair_jobs = create_repair_jobs(gdf, payload_capacity)
         st.write(f"Total number of repair jobs created: {len(repair_jobs)}")
         
-        # Plan routes
-        route_plans = plan_routes(repair_jobs, station_coords, num_bots)
-        st.write(f"Number of route plans: {len(route_plans)}")
-        for i, plan in enumerate(route_plans):
-            st.write(f"Plan {i+1}:")
-            st.write(f"  Number of routes: {len(plan['routes'])}")
-            st.write(f"  Number of unassigned jobs: {len(plan['unassigned'])}")
-
-            
-            # Create a DataFrame for the current plan
-            plan_data = []
-            for j, route in enumerate(plan['routes']):
-                for step in route['steps']:
-                    plan_data.append({
-                        'Plan': i+1,
-                        'Route': j+1,
-                        'Step Type': step['type'],
-                        'Job ID': step.get('id', 'N/A'),
-                        'Arrival Time': step['arrival'],
-                        'Amount': step.get('amount', 'N/A')
-                    })
-            
-            plan_df = pd.DataFrame(plan_data)
-            st.write(plan_df)
-        
         if postcode and station_coords:
+            # Plan routes
+            route_plans = plan_routes(repair_jobs, station_coords, num_bots)
+            st.write(f"Number of route plans: {len(route_plans)}")
+            
+            for trip, plan in enumerate(route_plans, 1):
+                st.write(f"Trip {trip}:")
+                st.write(f"  Number of routes: {len(plan['routes'])}")
+                st.write(f"  Number of unassigned jobs: {len(plan['unassigned'])}")
+                
+                # Create a DataFrame for the current plan
+                plan_data = []
+                for route_num, route in enumerate(plan['routes'], 1):
+                    for step in route['steps']:
+                        plan_data.append({
+                            'Trip': trip,
+                            'Route': route_num,
+                            'Step Type': step['type'],
+                            'Job ID': step.get('id', 'N/A'),
+                            'Arrival Time': step['arrival'],
+                            'Amount': step.get('amount', 'N/A')
+                        })
+                
+                plan_df = pd.DataFrame(plan_data)
+                st.write(plan_df)
+
             # Create and display the map
             create_and_display_map(station_coords, gdf)
         elif postcode:

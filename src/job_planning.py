@@ -1,4 +1,6 @@
 import math
+import requests
+import os
 from typing import List, Dict, Tuple
 
 def create_repair_jobs(gdf, bot_capacity):
@@ -17,6 +19,22 @@ def create_repair_jobs(gdf, bot_capacity):
             job_count += 1
     return jobs
 
+
+def get_travel_time(start, end):
+    api_key = os.environ['ORS_key']
+    url = f"https://api.openrouteservice.org/v2/directions/driving-car"
+    headers = {'Authorization': api_key}
+    params = {
+        'start': f"{start[1]},{start[0]}",
+        'end': f"{end[1]},{end[0]}"
+    }
+    response = requests.get(url, headers=headers, params=params)
+    if response.status_code == 200:
+        data = response.json()
+        return data['features'][0]['properties']['segments'][0]['duration']
+    else:
+        # Return a default value if API call fails
+        return 1800  # 30 minutes in seconds
 
 def plan_routes(jobs: List[Dict], station_coords: Tuple[float, float], num_bots: int) -> List[Dict]:
     route_plans = []
@@ -42,31 +60,29 @@ def plan_routes(jobs: List[Dict], station_coords: Tuple[float, float], num_bots:
             
             while pending_jobs:
                 job = pending_jobs.pop(0)
-                # TODO: Calculate actual travel time using OpenRouteService API
-                travel_time = 30  # Placeholder: 30 minutes travel time
-                service_time = 60  # Placeholder: 60 minutes service time
-                
-                route['total_time'] = route['total_time'] + travel_time + service_time
-                route['steps'].append({
-                    'type': 'job',
-                    'location': job['location'],
-                    'id': job['id'],
-                    'amount': job['amount'],
-                    'arrival': route['total_time'] - service_time
-                })
-                
-                # TODO: Add logic to check if bot capacity is exceeded
-                # If so, return to station and start a new route
+                if isinstance(job, dict) and 'location' in job:
+                    travel_time = get_travel_time(route['steps'][-1]['location'], job['location'])
+                    service_time = 3600  # 1 hour service time
+                    
+                    route['total_time'] += travel_time + service_time
+                    if isinstance(route['steps'], list):
+                        route['steps'].append({
+                            'type': 'job',
+                            'location': job['location'],
+                            'id': job['id'],
+                            'amount': job['amount'],
+                            'arrival': route['total_time'] - service_time
+                        })
             
             # Return to station
-            # TODO: Calculate actual travel time using OpenRouteService API
-            return_time = 30  # Placeholder: 30 minutes travel time
-            route['total_time'] = route['total_time'] + return_time
-            route['steps'].append({
-                'type': 'end',
-                'location': station_coords,
-                'arrival': route['total_time']
-            })
+            return_time = get_travel_time(route['steps'][-1]['location'], station_coords)
+            route['total_time'] += return_time
+            if isinstance(route['steps'], list):
+                route['steps'].append({
+                    'type': 'end',
+                    'location': station_coords,
+                    'arrival': route['total_time']
+                })
             current_plan['routes'].append(route)
         
         route_plans.append(current_plan)
