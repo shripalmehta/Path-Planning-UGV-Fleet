@@ -1,10 +1,10 @@
 import streamlit as st
 import geopandas as gpd
 import os
+import pandas as pd
 from utils import calculate_pothole_metrics
-from job_planning import create_repair_jobs
+from job_planning import create_repair_jobs, plan_routes
 from map_utils import create_and_display_map, get_coordinates
-
 
 def main():
     st.title("Road Fixer")
@@ -53,7 +53,32 @@ def main():
         # Create repair jobs
         repair_jobs = create_repair_jobs(gdf, payload_capacity)
         st.write(f"Total number of repair jobs created: {len(repair_jobs)}")
+        
+        # Plan routes
+        route_plans = plan_routes(repair_jobs, station_coords, num_bots)
+        st.write(f"Number of route plans: {len(route_plans)}")
+        for i, plan in enumerate(route_plans):
+            st.write(f"Plan {i+1}:")
+            st.write(f"  Number of routes: {len(plan['routes'])}")
+            st.write(f"  Number of unassigned jobs: {len(plan['unassigned'])}")
 
+            
+            # Create a DataFrame for the current plan
+            plan_data = []
+            for j, route in enumerate(plan['routes']):
+                for step in route['steps']:
+                    plan_data.append({
+                        'Plan': i+1,
+                        'Route': j+1,
+                        'Step Type': step['type'],
+                        'Job ID': step.get('id', 'N/A'),
+                        'Arrival Time': step['arrival'],
+                        'Amount': step.get('amount', 'N/A')
+                    })
+            
+            plan_df = pd.DataFrame(plan_data)
+            st.write(plan_df)
+        
         if postcode and station_coords:
             # Create and display the map
             create_and_display_map(station_coords, gdf)
