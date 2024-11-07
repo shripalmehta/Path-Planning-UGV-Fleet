@@ -2,96 +2,65 @@ import math
 import requests
 import os
 from typing import List, Dict, Tuple
+import openrouteservice as ors
 
-def create_repair_jobs(gdf, bot_capacity):
+def create_repair_jobs(gdf):
     jobs = []
     for idx, row in gdf.iterrows():
-        material_required = row['material_required']
-        job_count = 1
-        while material_required > 0:
-            amount = min(material_required, bot_capacity)
-            jobs.append({
-                'id': f"{idx}_{job_count}",
-                'location': (row['geometry'].y, row['geometry'].x),
-                'amount': amount
-            })
-            material_required -= amount
-            job_count += 1
+        jobs.append({
+            'id': f"{idx}",
+            'location': [row['geometry'].y, row['geometry'].x],
+            'amount': row['material_required'],
+            'service': int(row['service_time']),
+            'setup': int(row['setup_time'])
+        })
     return jobs
 
-
-def get_travel_time(start, end):
+def plan_routes(jobs: List[Dict], station_coords: Tuple[float, float], num_bots: int, bot_capacity: float) -> List[Dict]:
     api_key = os.environ['ORS_key']
-    url = f"https://api.openrouteservice.org/v2/directions/driving-car"
-    headers = {'Authorization': api_key}
-    params = {
-        'start': f"{start[1]},{start[0]}",
-        'end': f"{end[1]},{end[0]}"
-    }
-    response = requests.get(url, headers=headers, params=params)
-    if response.status_code == 200:
-        data = response.json()
-        return data['features'][0]['properties']['segments'][0]['duration']
-    else:
-        # Return a default value if API call fails
-        return 1800  # 30 minutes in seconds
-
-def plan_routes(jobs: List[Dict], station_coords: Tuple[float, float], num_bots: int) -> List[Dict]:
+    client = ors.Client(key=api_key)
+    
     route_plans = []
     pending_jobs = jobs.copy()
-    offset_time = 0
+    trip_number = 1
     
     while pending_jobs:
-        current_plan = {
-            'routes': [],
-            'unassigned': []
-        }
+        vehicles = [{
+            'id': f'bot_{i+1}',
+            'start': list(station_coords),
+            'end': list(station_coords),
+            'capacity': [bot_capacity]
+        } for i in range(num_bots)]
         
-        for _ in range(num_bots):
-            if not pending_jobs:
-                break
+        try:
+            result = ors.optimization.optimization(
+                client,
+                jobs=pending_jobs,
+                vehicles=vehicles,
+                geometry=True
+            )
             
-            route = {
-                'steps': [
-                    {'type': 'start', 'location': station_coords, 'arrival': offset_time}
-                ],
-                'total_time': offset_time
+            current_plan = {
+                'trip_number': trip_number,
+                'routes': result['routes'],
+                'unassigned': result['unassigned']
             }
             
-            while pending_jobs:
-                job = pending_jobs.pop(0)
-                if isinstance(job, dict) and 'location' in job:
-                    travel_time = get_travel_time(route['steps'][-1]['location'], job['location'])
-                    service_time = 3600  # 1 hour service time
-                    
-                    route['total_time'] += travel_time + service_time
-                    if isinstance(route['steps'], list):
-                        route['steps'].append({
-                            'type': 'job',
-                            'location': job['location'],
-                            'id': job['id'],
-                            'amount': job['amount'],
-                            'arrival': route['total_time'] - service_time
-                        })
+            route_plans.append(current_plan)
             
-            # Return to station
-            return_time = get_travel_time(route['steps'][-1]['location'], station_coords)
-            route['total_time'] += return_time
-            if isinstance(route['steps'], list):
-                route['steps'].append({
-                    'type': 'end',
-                    'location': station_coords,
-                    'arrival': route['total_time']
-                })
-            current_plan['routes'].append(route)
-        
-        route_plans.append(current_plan)
-        
-        if pending_jobs:
-            # Offset time for the next plan
-            offset_time = max(route['total_time'] for route in current_plan['routes'])
+            # Remove assigned jobs from pending_jobs
+            assigned_job_ids = set()
+            for route in result['routes']:
+                for step in route['steps']:
+                    if 'job' in step:
+                        assigned_job_ids.add(step['job'])
             
-            for job in pending_jobs:
-                job['offset_time'] = offset_time
+            pending_jobs = [job for job in pending_jobs if job['id'] not in assigned_job_ids]
+            
+            trip_number += 1
+        
+        except Exception as e:
+            print(f"Error in optimization: {e}")
+            break
     
     return route_plans

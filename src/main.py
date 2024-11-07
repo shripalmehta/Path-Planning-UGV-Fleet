@@ -9,12 +9,16 @@ from map_utils import create_and_display_map, get_coordinates
 def main():
     st.title("Road Fixer")
 
-    # Input for number of bots and payload capacity in the same row
-    col1, col2 = st.columns(2)
+    # Input for number of bots, payload capacity, area factor, and volume factor in the same row
+    col1, col2, col3, col4 = st.columns(4)
     with col1:
         num_bots = st.number_input("Number of bots in the fleet:", min_value=1, value=1, step=1)
     with col2:
-        payload_capacity = st.number_input("Payload capacity for all bots (kg):", min_value=0.1, value=100.0, step=0.1)
+        payload_capacity = st.number_input("Payload capacity for all bots (kg):", min_value=100, value=100, step=100)
+    with col3:
+        area_factor = st.number_input("Enter area factor:", min_value=100, value=100, step=100)
+    with col4:
+        volume_factor = st.number_input("Enter volume factor:", min_value=100, value=100, step=100)
 
     # Partition line
     st.markdown("---")
@@ -47,35 +51,43 @@ def main():
         
         # Calculate pothole metrics
         gdf = calculate_pothole_metrics(gdf)
+
+        # Calculate setup time based on road surface defect type
+        gdf['setup_time'] = gdf['defect'].map({'crack': 200, 'pothole': 300, 'dent': 600})
+        
+        # Calculate service time based on area and volume
+        gdf['service_time'] = gdf['area'] * area_factor + gdf['volume'] * volume_factor
         
         # Display full list of records
         st.write(gdf)
-
+        
         # Create repair jobs
-        repair_jobs = create_repair_jobs(gdf, payload_capacity)
+        repair_jobs = create_repair_jobs(gdf)
         st.write(f"Total number of repair jobs created: {len(repair_jobs)}")
         
         if postcode and station_coords:
             # Plan routes
-            route_plans = plan_routes(repair_jobs, station_coords, num_bots)
+            route_plans = plan_routes(repair_jobs, station_coords, num_bots, payload_capacity)
             st.write(f"Number of route plans: {len(route_plans)}")
             
-            for trip, plan in enumerate(route_plans, 1):
-                st.write(f"Trip {trip}:")
+            for plan in route_plans:
+                st.write(f"Trip {plan['trip_number']}:")
                 st.write(f"  Number of routes: {len(plan['routes'])}")
                 st.write(f"  Number of unassigned jobs: {len(plan['unassigned'])}")
                 
                 # Create a DataFrame for the current plan
                 plan_data = []
-                for route_num, route in enumerate(plan['routes'], 1):
+                for route in plan['routes']:
                     for step in route['steps']:
                         plan_data.append({
-                            'Trip': trip,
-                            'Route': route_num,
-                            'Step Type': step['type'],
-                            'Job ID': step.get('id', 'N/A'),
+                            'Trip': plan['trip_number'],
+                            'Bot ID': route['vehicle'],
+                            'Step Type': 'job' if 'job' in step else step['type'],
+                            'Job ID': step.get('job', 'N/A'),
                             'Arrival Time': step['arrival'],
-                            'Amount': step.get('amount', 'N/A')
+                            'Start Time': step.get('service', 'N/A'),
+                            'End Time': step.get('service_end', 'N/A'),
+                            'Amount': step.get('load', 'N/A')
                         })
                 
                 plan_df = pd.DataFrame(plan_data)
