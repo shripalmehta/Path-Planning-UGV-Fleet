@@ -28,7 +28,8 @@ def main():
     
     if postcode:
         # Get coordinates for the station
-        station_coords = get_coordinates(postcode)
+        # station_coords = get_coordinates(postcode)
+        station_coords = (53.789386, -1.517644)
         
         if station_coords:
             st.success(f"Station coordinates: {station_coords}")
